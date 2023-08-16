@@ -31,9 +31,6 @@ if torch.cuda.is_available():
     device = 'cuda'
 
 
-    
-batch_size=20
-
 def load_model(model_type, model_path):
     # load model
     if model_type == 'GPT-2':
