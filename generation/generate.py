@@ -68,7 +68,7 @@ def load_tokenizer(model_type, model_path):
     return tokenizer
         
 
-def generate_cn(model_type, model_path, list_hs, decoding, p=0.92, k=40, nb=5, rp=2.0, specialtokens=True, max_len =156):
+def generate_cn(model_type, model_path, list_hs, decoding, p=0.92, k=40, nb=5, rp=2.0, max_len =156):
     """
     Takes a list of HS in input and outputs a list of lists with 5 generated CNs for each input HS
     """
@@ -78,7 +78,6 @@ def generate_cn(model_type, model_path, list_hs, decoding, p=0.92, k=40, nb=5, r
         encoded_hs_ids = encode_hs(list_hs[i], model_type, model_path)
 
         if decoding == 'top-p':
-            name_col='tp'
             encoded_new_cn = model.generate(input_ids = encoded_hs_ids,
                                             max_length=max_len,
                                             do_sample=True,
@@ -86,7 +85,6 @@ def generate_cn(model_type, model_path, list_hs, decoding, p=0.92, k=40, nb=5, r
                                             num_return_sequences = 5)
 
         if decoding == 'top-k':
-            name_col='tk'
             encoded_new_cn = model.generate(input_ids = encoded_hs_ids,
                                             max_length = max_len, 
                                             do_sample = True, 
@@ -94,7 +92,6 @@ def generate_cn(model_type, model_path, list_hs, decoding, p=0.92, k=40, nb=5, r
                                             num_return_sequences = 5)
 
         if decoding == 'beam-search':
-            name_col='bs'
             encoded_new_cn = model.generate(input_ids = encoded_hs_ids,
                                             max_length=max_len,
                                             num_beams=nb, 
@@ -104,7 +101,6 @@ def generate_cn(model_type, model_path, list_hs, decoding, p=0.92, k=40, nb=5, r
                                             do_sample=True)
 
         if decoding == 'k-p':
-            name_col='kp'
             encoded_new_cn = model.generate(input_ids = encoded_hs_ids,
                                             max_length = max_len, 
                                             do_sample = True, 
@@ -173,8 +169,9 @@ def prepare_output_df(generated_cns, input_data, model_type, decoding):
     takes generated CNs, input data, model type and decoding mechanism 
     and returns a copy of the input data with a new column for each generated CN
     """
+    diz_cols = {'beam-search':'bs', 'top-p':'tp', 'top-k':'tk', 'k-p':'kp'}
     output_df = input_data.copy()
-    name_col = model_type + '_' + decoding
+    name_col = model_type + '_' + diz_cols[decoding]
     for i in range(5):
         toappend= [g[i] for g in generated_cns]
         output_df[name_col+str(i)] = toappend
