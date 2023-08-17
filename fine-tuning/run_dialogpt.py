@@ -104,9 +104,9 @@ args = Args()
 import pandas
 df = pandas.read_csv(path_to_hscn)
 train_df = df[df.Assigned_to == 'train']
-trn_df = train_df[['CN_ed','HS_ed']].rename(columns = {'CN_ed' : 'response','HS_ed' : 'context'})
+trn_df = train_df[['CN','HS']].rename(columns = {'CN' : 'response','HS' : 'context'})
 valid_df = df[df.Assigned_to == 'dev']
-val_df = valid_df[['CN_ed','HS_ed']].rename(columns = {'CN_ed' : 'response','HS_ed' : 'context'})
+val_df = valid_df[['CN','HS']].rename(columns = {'CN' : 'response','HS' : 'context'})
 print(trn_df)
 test_df = df[df.Assigned_to == 'test']
 

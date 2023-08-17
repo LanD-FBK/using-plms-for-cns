@@ -30,8 +30,8 @@ tokenizer = T5Tokenizer.from_pretrained(model_name)
 
 # process the examples in input and target text format and the eos token at the end
 def add_eos_to_examples(example):
-    example['input_text'] = '%s </s>' % example['HS_ed']
-    example['target_text'] = '%s </s>' % example['CN_ed']
+    example['input_text'] = '%s </s>' % example['HS']
+    example['target_text'] = '%s </s>' % example['CN']
     return example
 
 # tokenize the examples

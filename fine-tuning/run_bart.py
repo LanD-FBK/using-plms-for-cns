@@ -30,7 +30,7 @@ print(valid_dataset.num_rows)
 
 it = iter(train_dataset)
 data = next(it)
-print("Example data from the dataset: \n", data['HS_ed'])
+print("Example data from the dataset: \n", data['HS'])
 data = next(it)
 print("Example data from the dataset: \n", data)
 
@@ -54,8 +54,8 @@ def model_init():
 
 #https://github.com/huggingface/transformers/issues/8005
 inputs = tokenizer.prepare_seq2seq_batch(
-    src_texts=train_dataset['HS_ed'],
-    tgt_texts=train_dataset['CN_ed'],
+    src_texts=train_dataset['HS'],
+    tgt_texts=train_dataset['CN'],
     max_length=max_len, max_target_length=max_len,
     return_tensors='pt'
 )
@@ -76,8 +76,8 @@ print("target:", tokenizer.decode(tgt))
 
 
 def encode(example_batch):
-  input_encodings = tokenizer.batch_encode_plus(example_batch['HS_ed'], padding="max_length", max_length=max_len, truncation=True) #padding='longest' makes various sizes inside batch
-  target_encodings = tokenizer.batch_encode_plus(example_batch['CN_ed'], padding="max_length", max_length=max_len, truncation=True)
+  input_encodings = tokenizer.batch_encode_plus(example_batch['HS'], padding="max_length", max_length=max_len, truncation=True) #padding='longest' makes various sizes inside batch
+  target_encodings = tokenizer.batch_encode_plus(example_batch['CN'], padding="max_length", max_length=max_len, truncation=True)
   labels = target_encodings['input_ids']
   tlabels = torch.Tensor(labels).to(torch.int64)
   decoder_input_ids = shift_tokens_right(tlabels, tokenizer.pad_token_id)

@@ -38,11 +38,11 @@ tokenizer.eos_token = tokenizer.sep_token
 print(tokenizer.vocab_size)
 df = pandas.read_csv(path_to_hscn)
 train_df = df[df.Assigned_to == 'train']
-trn_df = train_df[['HS_ed','CN_ed']]
+trn_df = train_df[['HS','CN']]
 val_df = df[df.Assigned_to == 'dev']
-v_df = val_df[['HS_ed','CN_ed']]
+v_df = val_df[['HS','CN']]
 test_df = df[df.Assigned_to == 'test']
-tst_df = test_df[['HS_ed','CN_ed']]
+tst_df = test_df[['HS','CN']]
 
 
 train_data = Dataset.from_pandas(trn_df,  split='train').shuffle(seed=seed)
@@ -55,8 +55,8 @@ decoder_max_length = 128 #max cn len
 
 def process_data_to_model_inputs(batch):
   # tokenize the inputs and labels
-  inputs = tokenizer(batch["HS_ed"], padding="max_length", truncation=True, max_length=encoder_max_length)
-  outputs = tokenizer(batch["CN_ed"], padding="max_length", truncation=True, max_length=decoder_max_length)
+  inputs = tokenizer(batch["HS"], padding="max_length", truncation=True, max_length=encoder_max_length)
+  outputs = tokenizer(batch["CN"], padding="max_length", truncation=True, max_length=decoder_max_length)
 
   batch["input_ids"] = inputs.input_ids
   batch["attention_mask"] = inputs.attention_mask
@@ -75,7 +75,7 @@ train_data = train_data.map(
     process_data_to_model_inputs,
     batched=True,
     batch_size=batch_size,
-    remove_columns=["HS_ed", "CN_ed"]
+    remove_columns=["HS", "CN"]
 )
 train_data.set_format(
     type="torch", columns=["input_ids", "attention_mask", "decoder_input_ids", "decoder_attention_mask", "labels"],
@@ -86,7 +86,7 @@ val_data = val_data.map(
     process_data_to_model_inputs,
     batched=True,
     batch_size=batch_size,
-    remove_columns=["HS_ed", "CN_ed"]
+    remove_columns=["HS", "CN"]
 )
 val_data.set_format(
     type="torch", columns=["input_ids", "attention_mask", "decoder_input_ids", "decoder_attention_mask", "labels"],
