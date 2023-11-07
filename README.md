@@ -1,5 +1,5 @@
 # Using Pre-Trained Language Models for Producing Counter Narratives Against Hate Speech: a Comparative Study
-This repository contains the code to replicate our experiments. The **fine-tuning**, **generation** and **evaluation** folders include the scripts and notebooks necessary to replicate our experiments. The **data** folder includes the data splits to fine-tune the models for both the first set of experiments and the Leave One Target Out (LOTO) experiments.
+This repository contains the code to replicate our experiments. The **fine-tuning**, **generation** and **evaluation** folders include the scripts and notebooks necessary to replicate our experiments. The **data** folder includes the data splits to fine-tune the models for both the first set of experiments and the Leave One Target Out (LOTO) experiments. Note that for fine-tuning GPT-2 we have used special tags, so the relative data for fine-tuning are already preprocessed.
 
 ## Reference
 Further details can be found in our paper: 
